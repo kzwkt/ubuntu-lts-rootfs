@@ -34,7 +34,7 @@ jobs:
           sudo tar -czf "${{ github.workspace }}/ubuntu-rootfs.tar.gz" -C "${{ github.workspace }}/ubuntu-rootfs" .
 
       - name: Upload rootfs artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ubuntu-rootfs
           path: ${{ github.workspace }}/ubuntu-rootfs.tar.gz

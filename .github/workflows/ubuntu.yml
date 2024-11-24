@@ -23,7 +23,7 @@ jobs:
 
       - name: Archive rootfs
         run: |
-          sudo tar -czf ${GITHUB_WORKSPACE}/ubuntu-rootfs.tar.gz -C ${GITHUB_WORKSPACE}/ubuntu-rootfs 
+          sudo tar -czf ${GITHUB_WORKSPACE}/ubuntu-rootfs.tar.gz -C ${GITHUB_WORKSPACE}/ubuntu-rootfs .
 
       - name: Upload rootfs artifact
         uses: actions/upload-artifact@v4

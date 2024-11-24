@@ -1,0 +1,40 @@
+name: Build Debian Rootfs
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-rootfs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up the environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y debootstrap
+
+      - name: Create ubuntu noble Rootfs
+        run: |
+          # Define the rootfs output directory with full path
+          export ROOTFS_DIR="${{ github.workspace }}/ubuntu-rootfs"
+          
+          # Make sure the directory is created and empty
+          sudo rm -rf "$ROOTFS_DIR"
+          sudo mkdir -p "$ROOTFS_DIR"
+          
+          # Run debootstrap with minbase variant
+          sudo debootstrap --variant=minbase --arch=amd64 noble "$ROOTFS_DIR" http://archive.ubuntu.com/ubuntu/
+
+      - name: Archive rootfs
+        run: |
+          # Compress the rootfs into a tarball
+          sudo tar -czf "${{ github.workspace }}/ubuntu-rootfs.tar.gz" -C "${{ github.workspace }}/ubuntu-rootfs" .
+
+      - name: Upload rootfs artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ubuntu-rootfs
+          path: ${{ github.workspace }}/ubuntu-rootfs.tar.gz

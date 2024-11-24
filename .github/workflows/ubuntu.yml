@@ -18,23 +18,15 @@ jobs:
 
       - name: Create ubuntu noble Rootfs
         run: |
-          # Define the rootfs output directory with full path
-          export ROOTFS_DIR="${{ github.workspace }}/ubuntu-rootfs"
-          
-          # Make sure the directory is created and empty
-          sudo rm -rf "$ROOTFS_DIR"
-          sudo mkdir -p "$ROOTFS_DIR"
-          
-          # Run debootstrap with minbase variant
-          sudo debootstrap --variant=minbase --arch=amd64 noble "$ROOTFS_DIR" http://archive.ubuntu.com/ubuntu/
+         mkdir -p ${GITHUB_WORKSPACE}/ubuntu-rootfs
+          sudo debootstrap --variant=minbase --arch=amd64 noble ${GITHUB_WORKSPACE}/ubuntu-rootfs  http://archive.ubuntu.com/ubuntu/
 
       - name: Archive rootfs
         run: |
-          # Compress the rootfs into a tarball
-          sudo tar -czf "${{ github.workspace }}/ubuntu-rootfs.tar.gz" -C "${{ github.workspace }}/ubuntu-rootfs" .
+          sudo tar -czf ${GITHUB_WORKSPACE}/ubuntu-rootfs.tar.gz -C ${GITHUB_WORKSPACE}/ubuntu-rootfs 
 
       - name: Upload rootfs artifact
         uses: actions/upload-artifact@v4
         with:
           name: ubuntu-rootfs
-          path: ${{ github.workspace }}/ubuntu-rootfs.tar.gz
+          path: $GITHUB_WORKSPACE/ubuntu-rootfs.tar.gz

@@ -18,7 +18,7 @@ jobs:
 
       - name: Create ubuntu noble Rootfs
         run: |
-         mkdir -p ${GITHUB_WORKSPACE}/ubuntu-rootfs
+          mkdir -p ${GITHUB_WORKSPACE}/ubuntu-rootfs
           sudo debootstrap --variant=minbase --arch=amd64 noble ${GITHUB_WORKSPACE}/ubuntu-rootfs  http://archive.ubuntu.com/ubuntu/
 
       - name: Archive rootfs
